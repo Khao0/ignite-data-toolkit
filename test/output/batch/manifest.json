@@ -1,0 +1,451 @@
+{
+  "slide": "/Users/kwankhaotangprasert/Documents/GitHub/ignite-data-toolkit/test/slides/S19001216_A1_HE_R3.mrxs",
+  "source_mpp": [
+    0.242534722222222,
+    0.242647058823529
+  ],
+  "output_mpp": 0.5,
+  "size": 1024,
+  "patches": [
+    {
+      "file": "patch_x12666_y0.png",
+      "location_level0": [
+        12666,
+        0
+      ],
+      "tissue_fraction": 0.294189453125
+    },
+    {
+      "file": "patch_x14777_y0.png",
+      "location_level0": [
+        14777,
+        0
+      ],
+      "tissue_fraction": 0.216064453125
+    },
+    {
+      "file": "patch_x23221_y0.png",
+      "location_level0": [
+        23221,
+        0
+      ],
+      "tissue_fraction": 0.725830078125
+    },
+    {
+      "file": "patch_x25332_y0.png",
+      "location_level0": [
+        25332,
+        0
+      ],
+      "tissue_fraction": 0.270751953125
+    },
+    {
+      "file": "patch_x2111_y2110.png",
+      "location_level0": [
+        2111,
+        2110
+      ],
+      "tissue_fraction": 0.3505859375
+    },
+    {
+      "file": "patch_x4222_y2110.png",
+      "location_level0": [
+        4222,
+        2110
+      ],
+      "tissue_fraction": 0.396240234375
+    },
+    {
+      "file": "patch_x8444_y2110.png",
+      "location_level0": [
+        8444,
+        2110
+      ],
+      "tissue_fraction": 0.54052734375
+    },
+    {
+      "file": "patch_x10555_y2110.png",
+      "location_level0": [
+        10555,
+        2110
+      ],
+      "tissue_fraction": 0.749755859375
+    },
+    {
+      "file": "patch_x12666_y2110.png",
+      "location_level0": [
+        12666,
+        2110
+      ],
+      "tissue_fraction": 0.8720703125
+    },
+    {
+      "file": "patch_x14777_y2110.png",
+      "location_level0": [
+        14777,
+        2110
+      ],
+      "tissue_fraction": 0.82373046875
+    },
+    {
+      "file": "patch_x21110_y2110.png",
+      "location_level0": [
+        21110,
+        2110
+      ],
+      "tissue_fraction": 0.46875
+    },
+    {
+      "file": "patch_x23221_y2110.png",
+      "location_level0": [
+        23221,
+        2110
+      ],
+      "tissue_fraction": 0.990966796875
+    },
+    {
+      "file": "patch_x25332_y2110.png",
+      "location_level0": [
+        25332,
+        2110
+      ],
+      "tissue_fraction": 0.357421875
+    },
+    {
+      "file": "patch_x6333_y4220.png",
+      "location_level0": [
+        6333,
+        4220
+      ],
+      "tissue_fraction": 0.62451171875
+    },
+    {
+      "file": "patch_x8444_y4220.png",
+      "location_level0": [
+        8444,
+        4220
+      ],
+      "tissue_fraction": 0.724609375
+    },
+    {
+      "file": "patch_x10555_y4220.png",
+      "location_level0": [
+        10555,
+        4220
+      ],
+      "tissue_fraction": 0.949462890625
+    },
+    {
+      "file": "patch_x12666_y4220.png",
+      "location_level0": [
+        12666,
+        4220
+      ],
+      "tissue_fraction": 0.94921875
+    },
+    {
+      "file": "patch_x14777_y4220.png",
+      "location_level0": [
+        14777,
+        4220
+      ],
+      "tissue_fraction": 0.3935546875
+    },
+    {
+      "file": "patch_x21110_y4220.png",
+      "location_level0": [
+        21110,
+        4220
+      ],
+      "tissue_fraction": 0.648193359375
+    },
+    {
+      "file": "patch_x23221_y4220.png",
+      "location_level0": [
+        23221,
+        4220
+      ],
+      "tissue_fraction": 0.934814453125
+    },
+    {
+      "file": "patch_x10555_y6330.png",
+      "location_level0": [
+        10555,
+        6330
+      ],
+      "tissue_fraction": 0.194091796875
+    },
+    {
+      "file": "patch_x12666_y6330.png",
+      "location_level0": [
+        12666,
+        6330
+      ],
+      "tissue_fraction": 0.22705078125
+    },
+    {
+      "file": "patch_x14777_y6330.png",
+      "location_level0": [
+        14777,
+        6330
+      ],
+      "tissue_fraction": 0.30419921875
+    },
+    {
+      "file": "patch_x16888_y6330.png",
+      "location_level0": [
+        16888,
+        6330
+      ],
+      "tissue_fraction": 0.495849609375
+    },
+    {
+      "file": "patch_x18999_y6330.png",
+      "location_level0": [
+        18999,
+        6330
+      ],
+      "tissue_fraction": 0.878662109375
+    },
+    {
+      "file": "patch_x21110_y6330.png",
+      "location_level0": [
+        21110,
+        6330
+      ],
+      "tissue_fraction": 0.993408203125
+    },
+    {
+      "file": "patch_x23221_y6330.png",
+      "location_level0": [
+        23221,
+        6330
+      ],
+      "tissue_fraction": 0.544677734375
+    },
+    {
+      "file": "patch_x8444_y8440.png",
+      "location_level0": [
+        8444,
+        8440
+      ],
+      "tissue_fraction": 0.289306640625
+    },
+    {
+      "file": "patch_x10555_y8440.png",
+      "location_level0": [
+        10555,
+        8440
+      ],
+      "tissue_fraction": 0.829833984375
+    },
+    {
+      "file": "patch_x12666_y8440.png",
+      "location_level0": [
+        12666,
+        8440
+      ],
+      "tissue_fraction": 0.997314453125
+    },
+    {
+      "file": "patch_x14777_y8440.png",
+      "location_level0": [
+        14777,
+        8440
+      ],
+      "tissue_fraction": 0.9921875
+    },
+    {
+      "file": "patch_x16888_y8440.png",
+      "location_level0": [
+        16888,
+        8440
+      ],
+      "tissue_fraction": 0.97412109375
+    },
+    {
+      "file": "patch_x18999_y8440.png",
+      "location_level0": [
+        18999,
+        8440
+      ],
+      "tissue_fraction": 0.815185546875
+    },
+    {
+      "file": "patch_x21110_y8440.png",
+      "location_level0": [
+        21110,
+        8440
+      ],
+      "tissue_fraction": 0.383056640625
+    },
+    {
+      "file": "patch_x8444_y10550.png",
+      "location_level0": [
+        8444,
+        10550
+      ],
+      "tissue_fraction": 0.392578125
+    },
+    {
+      "file": "patch_x10555_y10550.png",
+      "location_level0": [
+        10555,
+        10550
+      ],
+      "tissue_fraction": 0.539306640625
+    },
+    {
+      "file": "patch_x12666_y10550.png",
+      "location_level0": [
+        12666,
+        10550
+      ],
+      "tissue_fraction": 0.516357421875
+    },
+    {
+      "file": "patch_x14777_y10550.png",
+      "location_level0": [
+        14777,
+        10550
+      ],
+      "tissue_fraction": 0.35986328125
+    },
+    {
+      "file": "patch_x12666_y12660.png",
+      "location_level0": [
+        12666,
+        12660
+      ],
+      "tissue_fraction": 0.17236328125
+    },
+    {
+      "file": "patch_x14777_y12660.png",
+      "location_level0": [
+        14777,
+        12660
+      ],
+      "tissue_fraction": 0.23046875
+    },
+    {
+      "file": "patch_x18999_y12660.png",
+      "location_level0": [
+        18999,
+        12660
+      ],
+      "tissue_fraction": 0.1884765625
+    },
+    {
+      "file": "patch_x0_y14770.png",
+      "location_level0": [
+        0,
+        14770
+      ],
+      "tissue_fraction": 0.166748046875
+    },
+    {
+      "file": "patch_x2111_y14770.png",
+      "location_level0": [
+        2111,
+        14770
+      ],
+      "tissue_fraction": 0.650390625
+    },
+    {
+      "file": "patch_x4222_y14770.png",
+      "location_level0": [
+        4222,
+        14770
+      ],
+      "tissue_fraction": 0.8095703125
+    },
+    {
+      "file": "patch_x6333_y14770.png",
+      "location_level0": [
+        6333,
+        14770
+      ],
+      "tissue_fraction": 0.9736328125
+    },
+    {
+      "file": "patch_x8444_y14770.png",
+      "location_level0": [
+        8444,
+        14770
+      ],
+      "tissue_fraction": 0.985595703125
+    },
+    {
+      "file": "patch_x10555_y14770.png",
+      "location_level0": [
+        10555,
+        14770
+      ],
+      "tissue_fraction": 0.99169921875
+    },
+    {
+      "file": "patch_x12666_y14770.png",
+      "location_level0": [
+        12666,
+        14770
+      ],
+      "tissue_fraction": 0.86865234375
+    },
+    {
+      "file": "patch_x14777_y14770.png",
+      "location_level0": [
+        14777,
+        14770
+      ],
+      "tissue_fraction": 0.863525390625
+    },
+    {
+      "file": "patch_x16888_y14770.png",
+      "location_level0": [
+        16888,
+        14770
+      ],
+      "tissue_fraction": 0.90234375
+    },
+    {
+      "file": "patch_x18999_y14770.png",
+      "location_level0": [
+        18999,
+        14770
+      ],
+      "tissue_fraction": 0.94384765625
+    },
+    {
+      "file": "patch_x21110_y14770.png",
+      "location_level0": [
+        21110,
+        14770
+      ],
+      "tissue_fraction": 0.8349609375
+    },
+    {
+      "file": "patch_x23221_y14770.png",
+      "location_level0": [
+        23221,
+        14770
+      ],
+      "tissue_fraction": 0.822509765625
+    },
+    {
+      "file": "patch_x25332_y14770.png",
+      "location_level0": [
+        25332,
+        14770
+      ],
+      "tissue_fraction": 0.633056640625
+    },
+    {
+      "file": "patch_x27443_y14770.png",
+      "location_level0": [
+        27443,
+        14770
+      ],
+      "tissue_fraction": 0.256591796875
+    }
+  ]
+}

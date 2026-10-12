@@ -78,5 +78,19 @@ for i in tqdm(inference_images):
     softmax_mean = np.array(softmax_list).mean(0)
     pred_output = softmax_mean.argmax(axis=-1)-(1 if output_minus_1 else 0)
     Image.fromarray(pred_output.astype(np.uint8)).save(output_dir / f'{stem}.png')
+    print(f'{stem}: class IDs and pixel counts:', dict(zip(*np.unique(pred_output, return_counts=True))))
+    # Raw IDs 0-16 look almost black in a normal grayscale image viewer.
+    palette = np.array([
+        [0, 0, 0], [255, 255, 255], [0, 253, 255], [0, 249, 0],
+        [255, 251, 0], [255, 147, 0], [255, 47, 146], [148, 55, 255],
+        [1, 25, 147], [255, 38, 0], [0, 143, 0], [146, 144, 0],
+        [169, 169, 169], [83, 27, 147], [255, 126, 121], [215, 131, 255],
+        [148, 23, 81],
+    ], dtype=np.uint8)
+    preview_dir = output_dir / 'previews'
+    preview_dir.mkdir(exist_ok=True)
+    colored = Image.fromarray(palette[pred_output])
+    colored.save(preview_dir / f'{stem}_color.png')
+    Image.blend(image, colored, 0.45).save(preview_dir / f'{stem}_overlay.png')
 
 print('DONE')
