@@ -8,6 +8,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+from label_colors import COLORS, LEGEND
 
 print('RUNNING EVALUATION SCRIPT')
 
@@ -86,6 +87,7 @@ labels_remapped = {
     'Rest': 6,
     }
 
+colors = {class_id: [*rgb, 255] for class_id, rgb in COLORS.items()}
 colormap.update(colors)
 colormap = np.array(list(colormap.values()))/255.
 cmap = LinearSegmentedColormap.from_list('my_cmap', colors=colormap)
@@ -398,6 +400,8 @@ subset_colors = {
     "Rest": (180/255, 180/255, 180/255),   # Gray
     "Stroma and Inflammation": (255/255, 199/255, 0), # blend of yellow and orange
 }
+
+subset_colors.update({name: tuple(v / 255 for v in rgb) for _, name, rgb in LEGEND})
 
 def plot_dice_scores(dice_data, subset_colors, title):
     # Filter the DataFrame for only 'F1' metric
