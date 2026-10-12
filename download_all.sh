@@ -24,7 +24,7 @@ unzip -o "$ARCHIVE_NAME"
 rm "$ARCHIVE_NAME"
 
 # Extract sub-archives
-for archive in models.zip; do
+for archive in images.zip annotations.zip figures.zip models.zip; do
     if [ -f "$archive" ]; then
         echo "Extracting $archive..."
         unzip -o "$archive"
