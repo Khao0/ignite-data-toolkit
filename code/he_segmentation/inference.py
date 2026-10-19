@@ -9,12 +9,15 @@ from label_colors import PALETTE
 
 print('RUNNING INFERENCE SCRIPT')
 parser = argparse.ArgumentParser(description="Run IGNITE H&E segmentation on the published test set or your RGB PNGs at 0.5 microns/pixel.")
-parser.add_argument('--input', type=Path, help='Your H&E PNG file or folder of PNG crops (exclude thumbnails)')
-parser.add_argument('--output', type=Path, help='Output mask folder')
+parser.add_argument('--input', type=Path, help='Your H&E PNG file or folder of PNG crops, searched recursively (exclude thumbnails)')
+parser.add_argument('--output', type=Path, help='Output NumPy mask folder; preserves input subfolders')
+parser.add_argument('--preview-output', type=Path, help='Colored PNG folder (default: <output>/previews)')
 args = parser.parse_args()
 repo_root = Path(__file__).resolve().parents[2]
 output_dir = args.output or repo_root / 'data/inference/he'
 output_dir.mkdir(parents=True, exist_ok=True)
+preview_dir = args.preview_output or output_dir / 'previews'
+preview_dir.mkdir(parents=True, exist_ok=True)
 
 
 ##################################################
@@ -60,15 +63,22 @@ print('> Running inference')
 print('Saving inference in:', output_dir)
 
 if args.input:
-    inference_images = sorted(args.input.glob('*.png')) if args.input.is_dir() else [args.input]
+    input_root = args.input if args.input.is_dir() else args.input.parent
+    inference_images = sorted(args.input.rglob('*.png')) if args.input.is_dir() else [args.input]
     if not inference_images or any(not p.is_file() or p.suffix.lower() != '.png' for p in inference_images):
         parser.error('--input must be an existing PNG or a folder containing PNGs')
 else:
+    input_root = None
     df = pd.read_csv(repo_root / 'data/data_overview.csv')
     inference_images = sorted(df[(df['task'] == 'he_tissue_segmentation') & (df['split'] == 'test')]['image_path'].str.replace('.png', '_with_context.png').tolist())
 
 for i in tqdm(inference_images):
     stem = Path(i).stem
+    relative_path = Path(i).relative_to(input_root) if input_root is not None else Path(i).name
+    mask_path = (output_dir / relative_path).with_suffix('.npy')
+    preview_path = (preview_dir / relative_path).with_suffix('.png')
+    mask_path.parent.mkdir(parents=True, exist_ok=True)
+    preview_path.parent.mkdir(parents=True, exist_ok=True)
 
     image = Image.open(i).convert('RGB')
     i = np.array(image)
@@ -78,14 +88,11 @@ for i in tqdm(inference_images):
     softmax_list = ensemble_softmax_list(trainer, params, i)
     softmax_mean = np.array(softmax_list).mean(0)
     pred_output = softmax_mean.argmax(axis=-1)-(1 if output_minus_1 else 0)
-    Image.fromarray(pred_output.astype(np.uint8)).save(output_dir / f'{stem}.png') # each pixel have val btw 0-16 so the image look dark
+    np.save(mask_path, pred_output)
     print(f'{stem}: class IDs and pixel counts:', dict(zip(*np.unique(pred_output, return_counts=True))))
     # Raw IDs 0-16 look almost black in a normal grayscale image viewer.
     palette = np.array(PALETTE, dtype=np.uint8)
-    preview_dir = output_dir / 'previews'
-    preview_dir.mkdir(exist_ok=True)
     colored = Image.fromarray(palette[pred_output])
-    colored.save(preview_dir / f'{stem}_color.png')
-    Image.blend(image, colored, 0.45).save(preview_dir / f'{stem}_overlay.png')
+    colored.save(preview_path)
 
 print('DONE')

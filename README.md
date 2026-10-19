@@ -29,6 +29,24 @@ We describe additional details regarding the datasets on our [Zenodo data reposi
 * [`code/pdl1_detection/docker/run_inference_and_evaluation.sh`](code/pdl1_detection/docker/run_inference_and_evaluation.sh)
 
 
+### Inference on subject patch folders
+
+Inside the H&E inference environment, run:
+
+```bash
+python /ignite_data_toolkit/code/he_segmentation/inference.py \
+  --input /ignite_data_toolkit/mount_nas1/ProjectCanTT/SI_76cases/HE_demo_result/Prepare \
+  --output /ignite_data_toolkit/mount_nas1/ProjectCanTT/SI_76cases/HE_demo_result/ignite_output \
+  --preview-output /ignite_data_toolkit/mount_nas1/ProjectCanTT/SI_76cases/HE_demo_result/ignite_color_preview
+```
+
+The input directory is searched recursively. Each `Prepare/{subject}/{patch_name}.png`
+produces a class-ID array at `ignite_output/{subject}/{patch_name}.npy` and a colored
+RGB mask at `ignite_color_preview/{subject}/{patch_name}.png`, using the palette in
+`code/he_segmentation/label_colors.py`. NumPy masks preserve the prediction dtype
+and values. With no arguments, inference still uses the published test set; its
+masks are saved as `.npy`, with colored PNGs under the output's `previews` folder.
+
 ### Citation & license
 This Github repository is released under the [Apache-2.0 license](LICENSE) license. The data of the IGNITE data toolkit is released under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
 
