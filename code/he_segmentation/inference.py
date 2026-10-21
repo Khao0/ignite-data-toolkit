@@ -10,7 +10,7 @@ from label_colors import PALETTE
 print('RUNNING INFERENCE SCRIPT')
 parser = argparse.ArgumentParser(description="Run IGNITE H&E segmentation on the published test set or your RGB PNGs at 0.5 microns/pixel.")
 parser.add_argument('--input', type=Path, help='Your H&E PNG file or folder of PNG crops, searched recursively (exclude thumbnails)')
-parser.add_argument('--output', type=Path, help='Output NumPy mask folder; preserves input subfolders')
+parser.add_argument('--output', type=Path, help='Output compressed NumPy (.npz) mask folder; preserves input subfolders')
 parser.add_argument('--preview-output', type=Path, help='Colored PNG folder (default: <output>/previews)')
 args = parser.parse_args()
 repo_root = Path(__file__).resolve().parents[2]
@@ -75,7 +75,7 @@ else:
 for i in tqdm(inference_images):
     stem = Path(i).stem
     relative_path = Path(i).relative_to(input_root) if input_root is not None else Path(i).name
-    mask_path = (output_dir / relative_path).with_suffix('.npy')
+    mask_path = (output_dir / relative_path).with_suffix('.npz')
     preview_path = (preview_dir / relative_path).with_suffix('.png')
     mask_path.parent.mkdir(parents=True, exist_ok=True)
     preview_path.parent.mkdir(parents=True, exist_ok=True)
@@ -88,7 +88,7 @@ for i in tqdm(inference_images):
     softmax_list = ensemble_softmax_list(trainer, params, i)
     softmax_mean = np.array(softmax_list).mean(0)
     pred_output = softmax_mean.argmax(axis=-1)-(1 if output_minus_1 else 0)
-    np.save(mask_path, pred_output)
+    np.savez_compressed(mask_path, mask=pred_output.astype(np.uint8))
     print(f'{stem}: class IDs and pixel counts:', dict(zip(*np.unique(pred_output, return_counts=True))))
     # Raw IDs 0-16 look almost black in a normal grayscale image viewer.
     palette = np.array(PALETTE, dtype=np.uint8)
