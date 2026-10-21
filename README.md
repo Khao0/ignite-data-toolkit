@@ -47,6 +47,33 @@ RGB mask at `ignite_color_preview/{subject}/{patch_name}.png`, using the palette
 and values. With no arguments, inference still uses the published test set; its
 masks are saved as `.npy`, with colored PNGs under the output's `previews` folder.
 
+### Count images containing only white background
+
+Install Pillow if needed (`python -m pip install Pillow`), then run:
+
+```bash
+python code/check_white_background.py /path/to/images --recursive --csv white_background_report.csv
+```
+
+The script prints the number of white-background images and their percentage of
+successfully read images. By default, every pixel must be exactly white
+(`R = G = B = 255`). The optional CSV records each image's white pixel percentage
+and whether it meets the rule. Unreadable images are reported separately, excluded
+from the percentage, and cause an exit status of 1. Other file types are ignored.
+
+For near-white images or small amounts of foreground, adjust the rule:
+
+```bash
+python code/check_white_background.py /path/to/images --threshold 245 --min-white-percent 99 --csv white_background_report.csv
+```
+
+This counts an image when at least 99% of its pixels have all three RGB channels
+at or above 245. Omit `--recursive` to check only the given folder. Supported
+formats are PNG, JPEG, TIFF, BMP, and WebP; only the first frame is checked for
+multi-frame images. Transparent pixels are composited onto white. For IGNITE
+segmentation results, use the colored preview PNG folder; raw `.npy` class-ID
+masks are not image files and are ignored.
+
 ### Citation & license
 This Github repository is released under the [Apache-2.0 license](LICENSE) license. The data of the IGNITE data toolkit is released under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
 
