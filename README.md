@@ -37,15 +37,18 @@ Inside the H&E inference environment, run:
 python /ignite_data_toolkit/code/he_segmentation/inference.py \
   --input /ignite_data_toolkit/mount_nas1/ProjectCanTT/SI_76cases/HE_demo_result/Prepare \
   --output /ignite_data_toolkit/mount_nas1/ProjectCanTT/SI_76cases/HE_demo_result/ignite_output \
-  --preview-output /ignite_data_toolkit/mount_nas1/ProjectCanTT/SI_76cases/HE_demo_result/ignite_color_preview
+  --start-folder S22022568_A3_HE_R1 \
+  --folder-suffix R1
 ```
 
-The input directory is searched recursively. Each `Prepare/{subject}/{patch_name}.png`
-produces a class-ID array at `ignite_output/{subject}/{patch_name}.npy` and a colored
-RGB mask at `ignite_color_preview/{subject}/{patch_name}.png`, using the palette in
-`code/he_segmentation/label_colors.py`. NumPy masks preserve the prediction dtype
-and values. With no arguments, inference still uses the published test set; its
-masks are saved as `.npy`, with colored PNGs under the output's `previews` folder.
+The input directory is searched recursively. This command starts at
+`S22022568_A3_HE_R1` (inclusive) in alphabetical order and processes only immediate
+subfolders of `Prepare` whose names end with `R1`. The starting folder is processed
+again from its first patch. Omit the two folder options to process all input folders.
+Each `Prepare/{subject}/{patch_name}.png` produces a compressed class-ID array at
+`ignite_output/{subject}/{patch_name}.npz` under the `mask` key, stored as `uint8`.
+Colored preview creation and saving are currently commented out. With no arguments,
+inference still uses the published test set.
 
 ### Count images containing only white background
 

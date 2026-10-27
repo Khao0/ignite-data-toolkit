@@ -12,7 +12,13 @@ parser = argparse.ArgumentParser(description="Run IGNITE H&E segmentation on the
 parser.add_argument('--input', type=Path, help='Your H&E PNG file or folder of PNG crops, searched recursively (exclude thumbnails)')
 parser.add_argument('--output', type=Path, help='Output compressed NumPy (.npz) mask folder; preserves input subfolders')
 parser.add_argument('--preview-output', type=Path, help='Colored PNG folder (default: <output>/previews)')
+parser.add_argument('--start-folder', help='Resume at this immediate input subfolder, inclusive, in alphabetical order')
+parser.add_argument('--folder-suffix', help='Only process immediate input subfolders ending with this suffix')
 args = parser.parse_args()
+if (args.start_folder or args.folder_suffix) and (args.input is None or not args.input.is_dir()):
+    parser.error('--start-folder and --folder-suffix require --input to be a directory')
+if args.start_folder and not (args.input / args.start_folder).is_dir():
+    parser.error(f'Start folder does not exist: {args.input / args.start_folder}')
 repo_root = Path(__file__).resolve().parents[2]
 output_dir = args.output or repo_root / 'data/inference/he'
 output_dir.mkdir(parents=True, exist_ok=True)
@@ -67,6 +73,15 @@ if args.input:
     inference_images = sorted(args.input.rglob('*.png')) if args.input.is_dir() else [args.input]
     if not inference_images or any(not p.is_file() or p.suffix.lower() != '.png' for p in inference_images):
         parser.error('--input must be an existing PNG or a folder containing PNGs')
+    if args.start_folder or args.folder_suffix:
+        inference_images = [
+            path for path in inference_images
+            if len(path.relative_to(input_root).parts) > 1
+            and (not args.start_folder or path.relative_to(input_root).parts[0] >= args.start_folder)
+            and (not args.folder_suffix or path.relative_to(input_root).parts[0].endswith(args.folder_suffix))
+        ]
+        if not inference_images:
+            parser.error('No PNGs match the requested start folder and folder suffix')
 else:
     input_root = None
     df = pd.read_csv(repo_root / 'data/data_overview.csv')
@@ -91,8 +106,8 @@ for i in tqdm(inference_images):
     np.savez_compressed(mask_path, mask=pred_output.astype(np.uint8))
     print(f'{stem}: class IDs and pixel counts:', dict(zip(*np.unique(pred_output, return_counts=True))))
     # Raw IDs 0-16 look almost black in a normal grayscale image viewer.
-    palette = np.array(PALETTE, dtype=np.uint8)
-    colored = Image.fromarray(palette[pred_output])
-    colored.save(preview_path)
+    # palette = np.array(PALETTE, dtype=np.uint8)
+    # colored = Image.fromarray(palette[pred_output])
+    # colored.save(preview_path)
 
 print('DONE')
