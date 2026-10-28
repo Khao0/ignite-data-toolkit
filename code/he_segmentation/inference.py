@@ -87,16 +87,25 @@ else:
     df = pd.read_csv(repo_root / 'data/data_overview.csv')
     inference_images = sorted(df[(df['task'] == 'he_tissue_segmentation') & (df['split'] == 'test')]['image_path'].str.replace('.png', '_with_context.png').tolist())
 
+report_path = output_dir / 'report.txt'
+failed_images = 0
 for i in tqdm(inference_images):
     stem = Path(i).stem
     relative_path = Path(i).relative_to(input_root) if input_root is not None else Path(i).name
     mask_path = (output_dir / relative_path).with_suffix('.npz')
     preview_path = (preview_dir / relative_path).with_suffix('.png')
+    try:
+        with Image.open(i) as image:
+            i = np.array(image.convert('RGB'))
+    except (OSError, ValueError, SyntaxError, Image.DecompressionBombError) as error:
+        with report_path.open('a', encoding='utf-8') as report:
+            report.write(f'{Path(relative_path).as_posix()}\n')
+        failed_images += 1
+        tqdm.write(f'Skipping unreadable image {relative_path}: {error}')
+        continue
+
     mask_path.parent.mkdir(parents=True, exist_ok=True)
     preview_path.parent.mkdir(parents=True, exist_ok=True)
-
-    image = Image.open(i).convert('RGB')
-    i = np.array(image)
     i = np.expand_dims(i, axis=0)
     i = norm(i)
 
@@ -110,4 +119,6 @@ for i in tqdm(inference_images):
     # colored = Image.fromarray(palette[pred_output])
     # colored.save(preview_path)
 
+if failed_images:
+    print(f'Skipped {failed_images} unreadable images; paths appended to {report_path}')
 print('DONE')

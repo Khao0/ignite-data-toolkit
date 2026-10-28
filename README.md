@@ -50,6 +50,11 @@ Each `Prepare/{subject}/{patch_name}.png` produces a compressed class-ID array a
 Colored preview creation and saving are currently commented out. With no arguments,
 inference still uses the published test set.
 
+Images that cannot be opened or decoded are skipped, and inference continues with
+the remaining images. Their paths relative to the input directory (for example,
+`folder/part_123.png`) are appended one per line to `<output>/report.txt`.
+The report is created when an image fails; existing entries are preserved across runs.
+
 ### Count images containing only white background
 
 Install Pillow if needed (`python -m pip install Pillow`), then run:
