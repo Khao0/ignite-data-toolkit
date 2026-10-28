@@ -50,6 +50,20 @@ Each `Prepare/{subject}/{patch_name}.png` produces a compressed class-ID array a
 Colored preview creation and saving are currently commented out. With no arguments,
 inference still uses the published test set.
 
+Inference stops after 100 successfully saved images by default. Unreadable images
+do not count toward this limit. Use `--max-images 0` to process all images, or set
+another positive limit.
+
+To compare storage for the first 100 successful images, run:
+
+```bash
+python code/he_segmentation/inference.py --input /path/to/patches --output /path/to/output --max-images 100 --compare-storage
+```
+
+This also saves the same `uint8` masks as uncompressed `.npy` files under
+`<output>/uncompressed/`, preserving input subfolders. The final summary prints
+compressed and uncompressed file sizes and the percentage saved for this run.
+
 Images that cannot be opened or decoded are skipped, and inference continues with
 the remaining images. Their paths relative to the input directory (for example,
 `folder/part_123.png`) are appended one per line to `<output>/report.txt`.
