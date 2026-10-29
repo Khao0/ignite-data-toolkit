@@ -14,11 +14,7 @@ parser.add_argument('--output', type=Path, help='Output compressed NumPy (.npz) 
 parser.add_argument('--preview-output', type=Path, help='Colored PNG folder (default: <output>/previews)')
 parser.add_argument('--start-folder', help='Resume at this immediate input subfolder, inclusive, in alphabetical order')
 parser.add_argument('--folder-suffix', help='Only process immediate input subfolders ending with this suffix')
-parser.add_argument('--max-images', type=int, default=100, help='Stop after this many successfully saved images (default: 100; 0 for all)')
-parser.add_argument('--compare-storage', action='store_true', help='Also save uncompressed .npy masks and report storage savings')
 args = parser.parse_args()
-if args.max_images < 0:
-    parser.error('--max-images must be zero or positive')
 if (args.start_folder or args.folder_suffix) and (args.input is None or not args.input.is_dir()):
     parser.error('--start-folder and --folder-suffix require --input to be a directory')
 if args.start_folder and not (args.input / args.start_folder).is_dir():
@@ -93,8 +89,6 @@ else:
 
 report_path = output_dir / 'report.txt'
 failed_images = 0
-processed_images = 0
-compressed_bytes = uncompressed_bytes = 0
 for i in tqdm(inference_images):
     stem = Path(i).stem
     relative_path = Path(i).relative_to(input_root) if input_root is not None else Path(i).name
@@ -118,29 +112,13 @@ for i in tqdm(inference_images):
     softmax_list = ensemble_softmax_list(trainer, params, i)
     softmax_mean = np.array(softmax_list).mean(0)
     pred_output = softmax_mean.argmax(axis=-1)-(1 if output_minus_1 else 0)
-    mask = pred_output.astype(np.uint8)
-    np.savez_compressed(mask_path, mask=mask)
-    if args.compare_storage:
-        uncompressed_path = (output_dir / 'uncompressed' / relative_path).with_suffix('.npy')
-        uncompressed_path.parent.mkdir(parents=True, exist_ok=True)
-        np.save(uncompressed_path, mask)
-        compressed_bytes += mask_path.stat().st_size
-        uncompressed_bytes += uncompressed_path.stat().st_size
-    processed_images += 1
+    np.savez_compressed(mask_path, mask=pred_output.astype(np.uint8))
     # print(f'{stem}: class IDs and pixel counts:', dict(zip(*np.unique(pred_output, return_counts=True))))
     # Raw IDs 0-16 look almost black in a normal grayscale image viewer.
     # palette = np.array(PALETTE, dtype=np.uint8)
     # colored = Image.fromarray(palette[pred_output])
     # colored.save(preview_path)
-    if args.max_images and processed_images >= args.max_images:
-        break
 
-print(f'Images processed: {processed_images}')
-if args.compare_storage and processed_images:
-    saved_bytes = uncompressed_bytes - compressed_bytes
-    print(f'Compressed .npz: {compressed_bytes:,} bytes ({compressed_bytes / 1024**2:.2f} MiB)')
-    print(f'Uncompressed .npy: {uncompressed_bytes:,} bytes ({uncompressed_bytes / 1024**2:.2f} MiB)')
-    print(f'Space saved: {saved_bytes:,} bytes ({100 * saved_bytes / uncompressed_bytes:.2f}%)')
 if failed_images:
     print(f'Skipped {failed_images} unreadable images; paths appended to {report_path}')
 print('DONE')
