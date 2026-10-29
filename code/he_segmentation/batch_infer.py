@@ -133,7 +133,13 @@ def save_batch(images, paths):
 found_images = False
 for folder, inference_images in iter_image_folders(args.input, args.start_folder, args.folder_suffix):
     found_images = True
-    for path in tqdm(inference_images, desc=str(folder.relative_to(input_root))):
+    for path in tqdm(
+        inference_images,
+        desc=str(folder.relative_to(input_root)),
+        ascii=True,
+        position=0,
+        leave=True,
+    ):
         relative_path = Path(path).relative_to(input_root)
         try:
             with Image.open(path) as image:
@@ -152,12 +158,12 @@ for folder, inference_images in iter_image_folders(args.input, args.start_folder
             save_batch(batch_images, batch_paths)
             batch_images.clear()
             batch_paths.clear()
+
     # Finish this directory before discovering the next one.
     if batch_images:
         save_batch(batch_images, batch_paths)
         batch_images.clear()
         batch_paths.clear()
-        exit()
 
 if not found_images:
     parser.error('No PNGs match the input and requested folder filters')
