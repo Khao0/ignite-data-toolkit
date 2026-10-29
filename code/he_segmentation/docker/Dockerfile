@@ -28,4 +28,8 @@ RUN git clone https://github.com/DIAGNijmegen/nnUNet-for-pathology.git /home/use
 # For (VS code) ssh connection 
 RUN mkdir /var/run/sshd
 
+# Start in the project directory and return here when running `cd`.
+ENV HOME=/ignite_data_toolkit
+WORKDIR /ignite_data_toolkit
+
 ENTRYPOINT ["/bin/bash"]

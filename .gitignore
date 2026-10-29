@@ -6,7 +6,7 @@ __pycache__/
 # C extensions
 *.so
 /test/slides
-
+nnUNet-for-pathology/
 # Distribution / packaging
 .Python
 build/
