@@ -55,6 +55,27 @@ the remaining images. Their paths relative to the input directory (for example,
 `folder/part_123.png`) are appended one per line to `<output>/report.txt`.
 The report is created when an image fails; existing entries are preserved across runs.
 
+### Grouped H&E inference
+
+For grouped H&E inference that loads each model fold once per group of images, run:
+
+```bash
+python code/he_segmentation/batch_infer.py --input /path/to/patches --output /path/to/output --batch-size 4
+```
+
+The default group size is 4. Each image still uses all five folds, with their
+probabilities averaged before saving a compressed `uint8` mask. Prediction calls
+remain per image; grouping reduces fold weight reloads and uses more CPU RAM for
+inputs and accumulated probabilities. Lower `--batch-size` if RAM is limited.
+Unreadable images are skipped and appended to `<output>/report.txt`. The final
+partial group in each folder is also processed. Paths are discovered and sorted
+one directory at a time, so the script does not build a list of every PNG across
+the whole input tree. Only `--batch-size` decoded images are held for prediction.
+`--start-folder` and `--folder-suffix` filter immediate input subfolders before
+their contents are scanned; nested folders are still processed recursively.
+Colored PNG previews are saved under `<output>/previews/`, preserving input
+subfolders. Use `--preview-output /path/to/previews` to choose another directory.
+
 ### Count images containing only white background
 
 Install Pillow if needed (`python -m pip install Pillow`), then run:
