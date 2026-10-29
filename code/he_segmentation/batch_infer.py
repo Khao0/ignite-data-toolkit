@@ -14,7 +14,7 @@ parser.add_argument('--output', type=Path, help='Output compressed NumPy (.npz) 
 parser.add_argument('--preview-output', type=Path, help='Colored PNG folder (default: <output>/previews)')
 parser.add_argument('--start-folder', help='Resume at this immediate input subfolder, inclusive, in alphabetical order')
 parser.add_argument('--folder-suffix', help='Only process immediate input subfolders ending with this suffix')
-parser.add_argument('--batch-size', type=int, default=32, help='Images per group sharing each fold load (default: 4; uses more CPU RAM for larger groups)')
+parser.add_argument('--batch-size', type=int, default=128, help='Images per group sharing each fold load (default: 4; uses more CPU RAM for larger groups)')
 args = parser.parse_args()
 if args.batch_size < 1:
     parser.error('--batch-size must be positive')
@@ -124,10 +124,10 @@ def save_batch(images, paths):
         mask_path.parent.mkdir(parents=True, exist_ok=True)
         pred_output = softmax_mean.argmax(axis=-1)-(1 if output_minus_1 else 0)
         np.savez_compressed(mask_path, mask=pred_output.astype(np.uint8))
-        preview_path = (preview_dir / relative_path).with_suffix('.png')
-        preview_path.parent.mkdir(parents=True, exist_ok=True)
-        colored = Image.fromarray(palette[pred_output])
-        colored.save(preview_path)
+        # preview_path = (preview_dir / relative_path).with_suffix('.png')
+        # preview_path.parent.mkdir(parents=True, exist_ok=True)
+        # colored = Image.fromarray(palette[pred_output])
+        # colored.save(preview_path)
 
 
 found_images = False
