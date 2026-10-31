@@ -76,6 +76,23 @@ their contents are scanned; nested folders are still processed recursively.
 Colored PNG previews are saved under `<output>/previews/`, preserving input
 subfolders. Use `--preview-output /path/to/previews` to choose another directory.
 
+### Single-image H&E inference
+
+Inside the H&E inference environment, run:
+
+```bash
+python code/he_segmentation/single_image_infer.py \
+  --input /path/to/image.png \
+  --output /path/to/output \
+  --preview
+```
+
+The script uses the existing five model folds in `data/models/he/`, with paths
+resolved relative to the repository. Input images should be at 0.5 microns/pixel.
+It saves `<output>/<image_stem>.npz` containing the `uint8` class-ID array under
+the `mask` key. Include `--preview` to also save a colored segmentation image at
+`<output>/previews/<image_stem>.png`; omit it to save only the mask.
+
 ### Count images containing only white background
 
 Install Pillow if needed (`python -m pip install Pillow`), then run:
